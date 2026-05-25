@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>麥香拾光 Golden Wheat | 質感手作烘焙</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Google Fonts (加入襯線體提升質感) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet">
+    <!-- 引入 Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            /* 預設使用無襯線，標題使用襯線體 */
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #FDFBF7; /* 溫暖的米白色背景 */
+            color: #4A3728; /* 深咖啡色文字 */
+        }
+        .font-serif-tc {
+            font-family: 'Noto Serif TC', serif;
+        }
+        /* 隱藏捲軸 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* 購物車側邊欄動畫 */
+        #cart-drawer {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .translate-x-full {
+            transform: translateX(100%);
+        }
+        .translate-x-0 {
+            transform: translateX(0);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-primary': '#D97757', /* 暖陶土色，作為主視覺點綴 */
+                        'brand-primary-hover': '#C06446',
+                        'brand-text': '#4A3728',
+                        'brand-bg': '#FDFBF7',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="relative antialiased">
+
+    <!-- 頂部宣告列 -->
+    <div class="bg-brand-primary text-white text-xs sm:text-sm text-center py-2 tracking-widest">
+        🎉 歡慶品牌改版，全館常溫宅配滿 $1,500 即享免運優惠！
+    </div>
+
+    <!-- 導覽列 Header (置中優雅風格) -->
+    <header class="bg-white/95 backdrop-blur-sm sticky top-0 z-40 w-full shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- 左側：漢堡選單 (手機) & 社群/搜尋 (桌面) -->
+                <div class="flex-1 flex items-center">
+                    <button class="lg:hidden text-brand-text hover:text-brand-primary transition-colors mr-4">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div class="hidden lg:flex space-x-4 text-gray-400">
+                        <button class="hover:text-brand-primary transition-colors"><i data-lucide="search" class="w-5 h-5"></i></button>
+                        <button class="hover:text-brand-primary transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></button>
+                    </div>
+                </div>
+
+                <!-- 中間：Logo -->
+                <div class="flex-shrink-0 text-center cursor-pointer flex flex-col items-center">
+                    <h1 class="font-serif-tc text-2xl sm:text-3xl font-bold text-brand-text tracking-widest">麥香拾光</h1>
+                    <span class="text-[10px] sm:text-xs tracking-[0.2em] text-gray-500 uppercase mt-1">Golden Wheat Bakery</span>
+                </div>
+
+                <!-- 右側：會員與購物車 -->
+                <div class="flex-1 flex items-center justify-end space-x-4 sm:space-x-6">
+                    <button class="text-brand-text hover:text-brand-primary transition-colors flex items-center text-sm font-medium hidden sm:flex">
+                        <i data-lucide="user" class="w-5 h-5 mr-1"></i> <span class="hidden md:inline">會員登入</span>
+                    </button>
+                    <button class="text-brand-text hover:text-brand-primary transition-colors relative flex items-center" onclick="toggleCart()">
+                        <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                        <span id="cart-count" class="absolute -top-1.5 -right-2 bg-brand-primary text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center shadow-sm hidden">0</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 底部導覽連結 (桌面版) -->
+            <nav class="hidden lg:flex justify-center space-x-10 py-3 text-sm font-medium text-brand-text">
+                <a href="#" class="hover:text-brand-primary transition-colors">品牌故事</a>
+                <a href="#" class="hover:text-brand-primary transition-colors">最新鮮事</a>
+                <a href="#" class="hover:text-brand-primary transition-colors text-brand-primary border-b border-brand-primary pb-1">線上訂購</a>
+                <a href="#" class="hover:text-brand-primary transition-colors">中秋禮盒預購</a>
+                <a href="#" class="hover:text-brand-primary transition-colors">門市資訊</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主視覺 Hero Banner -->
+    <div class="relative w-full h-[300px] sm:h-[400px] lg:h-[500px]">
+        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=1920&h=800" alt="新鮮出爐的麵包" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center text-center px-4">
+            <div class="bg-white/90 backdrop-blur-md p-8 sm:p-12 rounded-2xl shadow-xl max-w-lg transform translate-y-4">
+                <h2 class="font-serif-tc text-3xl sm:text-4xl font-bold text-brand-text mb-4">每一口，都是拾光的美好</h2>
+                <p class="text-gray-600 mb-6 text-sm sm:text-base leading-relaxed">嚴選法國發酵奶油與在地小農食材，<br>每日清晨手工揉製，為您呈現最純粹的麥香。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要內容區：商品列表 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        
+        <!-- 區塊標題 -->
+        <div class="text-center mb-16">
+            <h3 class="font-serif-tc text-3xl text-brand-text font-bold mb-3 tracking-widest">人氣熱銷推薦</h3>
+            <div class="w-12 h-1 bg-brand-primary mx-auto rounded-full"></div>
+            <p class="mt-4 text-gray-500 text-sm">ARTISAN BREAD SELECTION</p>
+        </div>
+
+        <!-- 產品網格 (4欄設計) -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <!-- 產品卡片由 JS 生成 -->
+        </div>
+
+    </main>
+
+    <!-- 優雅的頁尾 -->
+    <footer class="bg-[#3A2B24] text-[#E5DCC5] py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
+            <div>
+                <h2 class="font-serif-tc text-2xl font-bold text-white mb-4 tracking-widest">麥香拾光</h2>
+                <p class="text-sm leading-relaxed opacity-80 mb-6">我們相信，好的麵包需要時間的醞釀。<br>用心對待每一寸麵團，只為傳遞最純粹的溫暖。</p>
+                <div class="flex justify-center md:justify-start space-x-4">
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-primary hover:border-brand-primary transition-all text-white"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-primary hover:border-brand-primary transition-all text-white"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-500 flex items-center justify-center hover:bg-brand-primary hover:border-brand-primary transition-all text-white"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+            <div class="hidden md:flex flex-col space-y-3">
+                <h4 class="text-white font-bold mb-2">關於我們</h4>
+                <a href="#" class="hover:text-brand-primary transition-colors text-sm opacity-80">品牌理念</a>
+                <a href="#" class="hover:text-brand-primary transition-colors text-sm opacity-80">實體門市</a>
+                <a href="#" class="hover:text-brand-primary transition-colors text-sm opacity-80">招募夥伴</a>
+            </div>
+            <div class="flex flex-col space-y-3 items-center md:items-start">
+                <h4 class="text-white font-bold mb-2">聯絡資訊</h4>
+                <p class="text-sm opacity-80 flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-2"></i> 02-2345-6789</p>
+                <p class="text-sm opacity-80 flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-2"></i> 營業時間：10:00 - 20:30</p>
+                <p class="text-sm opacity-80 flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-2"></i> service@goldenwheat.com</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-gray-700 text-center text-xs opacity-60">
+            <p>© 2026 Golden Wheat Bakery. 全新版型展示設計，非真實商業網站。</p>
+        </div>
+    </footer>
+
+    <!-- 購物車側邊欄 (Drawer) -->
+    <div id="cart-overlay" class="fixed inset-0 bg-brand-text bg-opacity-40 z-40 hidden transition-opacity opacity-0 backdrop-blur-sm" onclick="toggleCart()"></div>
+    <div id="cart-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-50 transform translate-x-full flex flex-col">
+        <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-brand-bg">
+            <h2 class="font-serif-tc text-xl font-bold text-brand-text flex items-center">
+                <i data-lucide="shopping-bag" class="w-5 h-5 mr-3 text-brand-primary"></i> 購物籃
+            </h2>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-800 transition-colors p-1 bg-white rounded-full shadow-sm">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-5 no-scrollbar bg-white">
+            <!-- 購物車為空時的畫面 -->
+            <div id="empty-cart-msg" class="text-center text-gray-400 py-16 flex flex-col items-center">
+                <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="croissant" class="w-12 h-12 text-gray-300"></i>
+                </div>
+                <p class="font-medium text-gray-600 mb-2">您的購物籃目前是空的</p>
+                <p class="text-sm">逛逛我們的熱銷商品，挑選喜歡的口味吧！</p>
+                <button onclick="toggleCart()" class="mt-6 px-6 py-2 border border-brand-primary text-brand-primary rounded-full hover:bg-brand-primary hover:text-white transition-colors text-sm font-medium">
+                    繼續選購
+                </button>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-100 p-6 bg-brand-bg">
+            <div class="flex justify-between items-center mb-6 text-brand-text">
+                <span class="text-gray-500 font-medium">訂單總金額</span>
+                <span id="cart-total" class="text-2xl font-bold font-serif-tc text-brand-primary">NT$0</span>
+            </div>
+            <button onclick="checkout()" class="w-full bg-brand-primary text-white py-4 rounded-xl hover:bg-brand-primary-hover transition-all font-bold tracking-widest shadow-lg shadow-brand-primary/30 flex justify-center items-center">
+                前往結帳 <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 自訂訊息提示框 (Modal) -->
+    <div id="message-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-brand-text bg-opacity-40 backdrop-blur-sm" onclick="closeMessage()"></div>
+        <div class="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 shadow-2xl z-10 transform scale-95 transition-transform duration-300 text-center" id="message-modal-content">
+            <div class="mx-auto w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4" id="message-icon-bg">
+                <div id="message-icon" class="text-green-500">
+                    <i data-lucide="check" class="w-8 h-8"></i>
+                </div>
+            </div>
+            <h3 class="font-serif-tc text-xl font-bold text-brand-text mb-2" id="message-title">成功！</h3>
+            <p id="message-text" class="text-gray-600 mb-8 text-sm"></p>
+            <button onclick="closeMessage()" class="w-full bg-gray-900 text-white py-3 rounded-xl hover:bg-gray-800 transition-colors font-medium">
+                我知道了
+            </button>
+        </div>
+    </div>
+
+    <!-- 應用程式邏輯 -->
+    <script>
+        // 初始化 Icons
+        lucide.createIcons();
+
+        // 貨幣格式化工具
+        const formatPrice = (price) => {
+            return new Intl.NumberFormat('zh-TW', { 
+                style: 'currency', 
+                currency: 'TWD', 
+                minimumFractionDigits: 0 
+            }).format(price);
+        };
+
+        // 全新商品資料 (更換名稱、圖片，並呈現法式/歐式高質感風格)
+        const products = [
+            {
+                id: 1,
+                name: "經典法式奶油可頌",
+                desc: "嚴選法國AOP產區發酵奶油，層次分明外酥內軟",
+                price: 75,
+                image: "https://images.unsplash.com/photo-1623334044303-241021148842?auto=format&fit=crop&q=80&w=600&h=750",
+                soldOut: false
+            },
+            {
+                id: 2,
+                name: "鄉村核桃無花果酸種",
+                desc: "自家培養老麵發酵，無花果的甘甜與核桃的香脆",
+                price: 240,
+                image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&q=80&w=600&h=750", 
+                soldOut: false
+            },
+            {
+                id: 3,
+                name: "法芙娜巧克力巴布卡",
+                desc: "交織濃郁黑巧克力醬的東歐傳統節慶麵包",
+                price: 320,
+                image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&q=80&w=600&h=750", 
+                soldOut: true // 標記為售完
+            },
+            {
+                id: 4,
+                name: "海鹽奶油海苔捲",
+                desc: "人氣 NO.1，微鹹海鹽提味，奶油香氣四溢",
+                price: 55,
+                image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600&h=750", 
+                soldOut: false
+            },
+            {
+                id: 5,
+                name: "純粹法國長棍 Baguette",
+                desc: "僅用水、麵粉、鹽與酵母，考驗烘焙基本功",
+                price: 110,
+                image: "https://images.unsplash.com/photo-1568471173242-461f0a730452?auto=format&fit=crop&q=80&w=600&h=750",
+                soldOut: false
+            },
+            {
+                id: 6,
+                name: "肉桂蘋果焦糖捲",
+                desc: "溫暖肉桂香搭配熬煮蘋果丁，淋上絲滑焦糖醬",
+                price: 135,
+                image: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&q=80&w=600&h=750",
+                soldOut: false
+            },
+            {
+                id: 7,
+                name: "伯爵茶香柑橘瑪德蓮",
+                desc: "法式經典常溫小點，帶著淡淡的唐寧伯爵茶香 (一盒6入)",
+                price: 280,
+                image: "https://images.unsplash.com/photo-1530798201275-36788656a333?auto=format&fit=crop&q=80&w=600&h=750",
+                soldOut: false
+            },
+            {
+                id: 8,
+                name: "黑麥蜂蜜燕麥吐司",
+                desc: "健康無負擔，口感扎實富有嚼勁",
+                price: 180,
+                image: "https://images.unsplash.com/photo-1558465984-9a9302b5b0bc?auto=format&fit=crop&q=80&w=600&h=750",
+                soldOut: false
+            }
+        ];
+
+        let cart = [];
+
+        // 渲染全新設計的產品列表
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'group flex flex-col bg-white rounded-2xl overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-50';
+                
+                card.innerHTML = `
+                    <div class="relative overflow-hidden aspect-[4/5] w-full bg-brand-bg cursor-pointer">
+                        <img src="${product.image}" 
+                             alt="${product.name}" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        
+                        ${product.soldOut 
+                            ? `<div class="absolute top-4 right-4 bg-gray-900 text-white text-xs font-bold px-3 py-1 rounded-full bg-opacity-80 backdrop-blur-sm">今日售完</div>` 
+                            : `<div class="absolute top-4 right-4 bg-white text-brand-primary text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center"><i data-lucide="flame" class="w-3 h-3 mr-1"></i>熱銷</div>`
+                        }
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="font-bold text-lg text-brand-text mb-1 truncate">${product.name}</h3>
+                        <p class="text-xs text-gray-400 mb-4 line-clamp-2 h-8">${product.desc}</p>
+                        
+                        <div class="mt-auto flex items-center justify-between">
+                            <p class="text-brand-text font-serif-tc font-bold text-xl">${formatPrice(product.price)}</p>
+                            
+                            ${product.soldOut 
+                                ? `<button disabled class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 cursor-not-allowed">
+                                       <i data-lucide="slash" class="w-5 h-5"></i>
+                                   </button>`
+                                : `<button onclick="addToCart(${product.id})" class="w-10 h-10 rounded-full bg-brand-primary text-white flex items-center justify-center hover:bg-brand-primary-hover hover:scale-110 transition-all shadow-md active:scale-95">
+                                       <i data-lucide="plus" class="w-5 h-5"></i>
+                                   </button>`
+                            }
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            // 替新建立的 DOM 元素加上 icon
+            lucide.createIcons();
+        }
+
+        // 加入購物車
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.soldOut) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showMessage('成功加入', `已將 <strong>${product.name}</strong> 加入您的購物籃。`, 'success');
+        }
+
+        // 更新購物車數量
+        function updateQuantity(productId, delta) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== productId);
+                }
+                updateCartUI();
+            }
+        }
+
+        // 移除購物車項目
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+        }
+
+        // 更新購物車介面
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const emptyMsg = document.getElementById('empty-cart-msg');
+            const countBadge = document.getElementById('cart-count');
+            const totalDisplay = document.getElementById('cart-total');
+
+            let totalCount = 0;
+            let totalPrice = 0;
+
+            const items = container.querySelectorAll('.cart-item');
+            items.forEach(item => item.remove());
+
+            if (cart.length === 0) {
+                emptyMsg.style.display = 'flex';
+                countBadge.classList.add('hidden');
+                totalDisplay.innerText = 'NT$0';
+                return;
+            }
+
+            emptyMsg.style.display = 'none';
+            countBadge.classList.remove('hidden');
+            countBadge.innerText = cart.length; // 顯示品項數而不是總數量，較為簡潔
+
+            cart.forEach(item => {
+                totalCount += item.quantity;
+                totalPrice += (item.price * item.quantity);
+
+                const itemEl = document.createElement('div');
+                itemEl.className = 'cart-item flex gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm relative group';
+                itemEl.innerHTML = `
+                    <div class="w-20 h-20 flex-shrink-0 bg-brand-bg rounded-lg overflow-hidden">
+                        <img src="${item.image}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between py-1">
+                        <div class="pr-6">
+                            <h4 class="font-bold text-brand-text text-sm line-clamp-2">${item.name}</h4>
+                            <span class="text-brand-primary font-serif-tc font-bold text-sm mt-1 block">${formatPrice(item.price)}</span>
+                        </div>
+                        
+                        <div class="flex items-center mt-2 w-max bg-gray-50 rounded-full px-2 py-1 border border-gray-200">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="w-6 h-6 flex items-center justify-center text-gray-500 hover:text-brand-primary transition-colors">
+                                <i data-lucide="minus" class="w-3 h-3"></i>
+                            </button>
+                            <span class="w-8 text-center text-sm font-medium text-brand-text">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="w-6 h-6 flex items-center justify-center text-gray-500 hover:text-brand-primary transition-colors">
+                                <i data-lucide="plus" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="absolute top-4 right-4 text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                `;
+                container.appendChild(itemEl);
+            });
+
+            totalDisplay.innerText = formatPrice(totalPrice);
+            lucide.createIcons();
+        }
+
+        // 開關購物車
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+            
+            if (drawer.classList.contains('translate-x-full')) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    drawer.classList.remove('translate-x-full');
+                    drawer.classList.add('translate-x-0');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.add('opacity-0');
+                drawer.classList.remove('translate-x-0');
+                drawer.classList.add('translate-x-full');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 400); 
+                document.body.style.overflow = '';
+            }
+        }
+
+        // 結帳
+        function checkout() {
+            if (cart.length === 0) {
+                showMessage('購物籃是空的', '請先挑選喜愛的商品加入購物籃。', 'error');
+                return;
+            }
+            toggleCart();
+            showMessage('訂單成立', '感謝您的購買！您的訂單已成功送出，我們將盡快為您準備美味的烘焙點心。', 'success');
+            cart = [];
+            updateCartUI();
+        }
+
+        // 顯示客製化訊息
+        function showMessage(title, text, type = 'success') {
+            const modal = document.getElementById('message-modal');
+            const content = document.getElementById('message-modal-content');
+            const iconBg = document.getElementById('message-icon-bg');
+            const iconDiv = document.getElementById('message-icon');
+            const titleDiv = document.getElementById('message-title');
+            const textDiv = document.getElementById('message-text');
+
+            titleDiv.innerText = title;
+            textDiv.innerHTML = text; // 允許傳入簡單的 HTML 標籤(如 <strong>)
+
+            if (type === 'success') {
+                iconBg.className = 'mx-auto w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4';
+                iconDiv.className = 'text-green-500';
+                iconDiv.innerHTML = '<i data-lucide="check" class="w-8 h-8"></i>';
+            } else {
+                iconBg.className = 'mx-auto w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4';
+                iconDiv.className = 'text-red-500';
+                iconDiv.innerHTML = '<i data-lucide="alert-circle" class="w-8 h-8"></i>';
+            }
+            lucide.createIcons();
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeMessage() {
+            const modal = document.getElementById('message-modal');
+            const content = document.getElementById('message-modal-content');
+
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // 初始載入
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartUI();
+        });
+
+    </script>
+</body>
+</html>
